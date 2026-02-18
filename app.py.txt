@@ -1,0 +1,21 @@
+import streamlit as st
+import google.generativeai as genai
+
+# ดึง API Key จากระบบความปลอดภัยของ Streamlit
+api_key = st.secrets["GEMINI_API_KEY"]
+genai.configure(api_key=api_key)
+
+st.title("🤖 My Group AI App")
+st.write("แอปพลิเคชันพิเศษสำหรับพวกเรา 30 คน")
+
+user_input = st.text_input("ถามอะไร AI ดี?")
+
+if st.button("ส่งคำถาม"):
+    if user_input:
+        model = genai.GenerativeModel('gemini-1.5-flash')
+        response = model.generate_content(user_input)
+        st.write("---")
+        st.subheader("คำตอบ:")
+        st.write(response.text)
+    else:
+        st.warning("กรุณาพิมพ์ข้อความก่อนกดส่งครับ")
